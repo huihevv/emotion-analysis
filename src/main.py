@@ -8,8 +8,9 @@ import src.core.emotions.emotion_extractor as emotion_extractor
 import src.utils.text_processor as text_utils
 import src.core.summary.keyphrase_extractor as keyphrase_extractor
 import src.core.clinical_info.clinical_info_extractor as clinical_info_extractor
-import xlrd
-from xlwt import *
+import src.csv_xls as csv_xls
+from openpyxl import load_workbook
+from openpyxl import Workbook
 
 def writeDataToExcelFile(inputData,outputFile):
     wb = Workbook()
@@ -24,8 +25,13 @@ def writeDataToExcelFile(inputData,outputFile):
 
 
 def cleanText(inpath):
-    indata=xlrd.open_workbook(inpath, encoding_override='utf-8')
-    book=Workbook(encoding_override='utf-8')
+    output = r'F:\projects-he\nlp-emotion-analysis-Jeloh\nlp-emotion-analysis-core\data\coronavirus_reddit_raw_comments.xls'
+    csv_xls.csv_to_xlsx_pd(inpath, output)
+    wb = load_workbook(inpath)
+    a_sheet
+
+    indata=xlrd.open_workbook(inpath)
+    book=Workbook(encoding='utf-8')
     outdata = book.add_sheet('sheet1')
     table = indata.sheets()[0]
     nrows = table.nrows
@@ -36,8 +42,7 @@ def cleanText(inpath):
         clean_text_1 = text_utils.clean_text(alldata[1])
         outdata.write(i,1, alldata[0])
         outdata.write(i,2, clean_text_1)
-    outdata.save("F://projects-he//nlp-emotion-analysis-Jeloh//nlp-emotion-analysis-core//src//data//AfterClean.csv")
-
+    outdata.save(r"F:\projects-he\nlp-emotion-analysis-Jeloh\nlp-emotion-analysis-core\data\AfterClean.csv")
 
 
 def load_emotion_dictionaries():
@@ -61,7 +66,8 @@ def load_emotion_dictionaries():
 if __name__ == '__main__':
     EMO_RESOURCES = load_emotion_dictionaries()
 
-    #inPath = 'coronavirus_reddit_raw_comments.csv'
+    inPath = r'F:\projects-he\nlp-emotion-analysis-Jeloh\nlp-emotion-analysis-core\data\coronavirus_reddit_raw_comments.csv'
+    cleanText(inPath)
     text_1 = 'The disease is not even inevitable. China and Korea have shown that the disease can be managed if everyone is taking it seriously.'
     clean_text_1 = text_utils.clean_text(text_1)
 
